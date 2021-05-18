@@ -312,17 +312,6 @@ static inline int tcol_vfprintf(FILE* stream, const char* fmt, va_list ap) {
         return status;
     }
 
-
-#ifdef TERMCOLOR_OS_WIN
-    HANDLE console = GetStdHandle(STD_INPUT_HANDLE);  // Console Input
-    HANDLE output  = GetStdHandle(STD_OUTPUT_HANDLE); // Console Output
-    DWORD mode;
-    GetConsoleMode(output, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
-    if (!SetConsoleMode(output, mode)) {
-      return TermColorErrorPrintingFailed;
-    }
-#endif
     // Perform the printf itself.
     if (vfprintf(stream, buffer, ap) < 0) {
         free(buffer);
